@@ -1,6 +1,7 @@
 .gradle/
 build/
 out/
+src/test/java/ru/stqa/training/selenium/TableHelpers.java
 
 # Ignore Gradle GUI config
 gradle-app.setting
