@@ -9,7 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TestBase {
@@ -54,10 +53,14 @@ public class TestBase {
         return driver.findElements(locator).size() > 0;
     }
 
+    public String[] returnChannels(String rgba) {
+        String[] numbers = rgba.replace("rgba(", "").replace("rgb(", "").replace(")", "").split(",");
+        return numbers;
+    }
+
     @After
     public void stop() {
         driver.quit();
         driver = null;
     }
-
 }

@@ -6,11 +6,13 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+import static org.junit.Assert.*;
 import static org.openqa.selenium.By.xpath;
 
 public class MySixthTest extends TestBase {
     @Test
-    public void verifyProductPage() {
+    public void verifyProductPage() throws InterruptedException {
         driver.navigate().to("http://localhost/litecart/en/");
         List<WebElement> campaigns = driver.findElements(xpath("//*[@id='box-campaigns']//ul//li"));
         int campaignsSize = campaigns.size();
@@ -28,6 +30,7 @@ public class MySixthTest extends TestBase {
             campaignPriceSizeHome = campaignPriceSizeHome.replaceAll("px", "");
 
             productHome.findElement(xpath(".//a[1]/div[2]")).click();
+            sleep(500);
 
             String productName = driver.findElement(xpath("//h1")).getText();
             String regularPrice = driver.findElement(xpath("//*[@id='box-product']//div[2]/s[@class='regular-price']")).getText();
@@ -40,22 +43,34 @@ public class MySixthTest extends TestBase {
             campaignPriceSize = campaignPriceSize.replaceAll("px", "");
 
             //а) на главной странице и на странице товара совпадает текст названия товара
-            Assert.assertEquals(productNameHome, productName);
-
+            assertEquals(productNameHome, productName);
             //б) на главной странице и на странице товара совпадают цены (обычная и акционная)
             //Проверить обычную цену
-            Assert.assertEquals(regularPriceHome, regularPrice);
+            assertEquals(regularPriceHome, regularPrice);
             //Проверить акционную цену
-            Assert.assertEquals(campaignPriceHome, campaignPrice);
+            assertEquals(campaignPriceHome, campaignPrice);
+
             //в) обычная цена зачёркнутая и серая (можно считать, что "серый" цвет это такой, у которого в RGBa представлении одинаковые значения для каналов R, G и B)
-            Assert.assertEquals(regularPriceColorHome, "rgba(119, 119, 119, 1)");
-            Assert.assertEquals(regularPriceColor, "rgba(102, 102, 102, 1)");
+            assertEquals(returnChannels(regularPriceColorHome)[0].trim(), "119");
+            assertEquals(returnChannels(regularPriceColorHome)[1].trim(), "119");
+            assertEquals(returnChannels(regularPriceColorHome)[2].trim(), "119");
+
+            assertEquals(returnChannels(regularPriceColor)[0].trim(), "102");
+            assertEquals(returnChannels(regularPriceColor)[1].trim(), "102");
+            assertEquals(returnChannels(regularPriceColor)[2].trim(), "102");
+
             //г) акционная жирная и красная (можно считать, что "красный" цвет это такой, у которого в RGBa представлении каналы G и B имеют нулевые значения)
-            Assert.assertEquals(campaignPriceColorHome, "rgba(204, 0, 0, 1)");
-            Assert.assertEquals(campaignPriceColor, "rgba(204, 0, 0, 1)");
+            assertEquals(returnChannels(campaignPriceColorHome)[0].trim(), "204");
+            assertEquals(returnChannels(campaignPriceColorHome)[1].trim(), "0");
+            assertEquals(returnChannels(campaignPriceColorHome)[2].trim(), "0");
+
+            assertEquals(returnChannels(campaignPriceColor)[0].trim(), "204");
+            assertEquals(returnChannels(campaignPriceColor)[1].trim(), "0");
+            assertEquals(returnChannels(campaignPriceColor)[2].trim(), "0");
+
             //д) акционная цена крупнее, чем обычная (это тоже надо проверить на каждой странице независимо)
-            Assert.assertTrue((Double.parseDouble((regularPriceSizeHome))) < (Double.parseDouble((campaignPriceSizeHome))));
-            Assert.assertTrue((Double.parseDouble((regularPriceSize))) < (Double.parseDouble((campaignPriceSize))));
+            assertTrue((Double.parseDouble((regularPriceSizeHome))) < (Double.parseDouble((campaignPriceSizeHome))));
+            assertTrue((Double.parseDouble((regularPriceSize))) < (Double.parseDouble((campaignPriceSize))));
         }
     }
 }
