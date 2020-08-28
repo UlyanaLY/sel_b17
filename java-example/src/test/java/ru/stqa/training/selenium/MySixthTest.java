@@ -1,6 +1,5 @@
 package ru.stqa.training.selenium;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
@@ -51,20 +50,17 @@ public class MySixthTest extends TestBase {
             assertEquals(campaignPriceHome, campaignPrice);
 
             //в) обычная цена зачёркнутая и серая (можно считать, что "серый" цвет это такой, у которого в RGBa представлении одинаковые значения для каналов R, G и B)
-            assertEquals(returnChannels(regularPriceColorHome)[0].trim(), "119");
-            assertEquals(returnChannels(regularPriceColorHome)[1].trim(), "119");
-            assertEquals(returnChannels(regularPriceColorHome)[2].trim(), "119");
+            assertEquals(returnChannels(regularPriceColorHome)[0].trim(), returnChannels(regularPriceColorHome)[1].trim());
+            assertEquals(returnChannels(regularPriceColorHome)[1].trim(), returnChannels(regularPriceColorHome)[2].trim());
 
-            assertEquals(returnChannels(regularPriceColor)[0].trim(), "102");
-            assertEquals(returnChannels(regularPriceColor)[1].trim(), "102");
-            assertEquals(returnChannels(regularPriceColor)[2].trim(), "102");
+            assertEquals(returnChannels(regularPriceColor)[0].trim(), returnChannels(regularPriceColor)[1].trim());
+            assertEquals(returnChannels(regularPriceColor)[1].trim(), returnChannels(regularPriceColor)[2].trim());
 
             //г) акционная жирная и красная (можно считать, что "красный" цвет это такой, у которого в RGBa представлении каналы G и B имеют нулевые значения)
-            assertEquals(returnChannels(campaignPriceColorHome)[0].trim(), "204");
+
             assertEquals(returnChannels(campaignPriceColorHome)[1].trim(), "0");
             assertEquals(returnChannels(campaignPriceColorHome)[2].trim(), "0");
 
-            assertEquals(returnChannels(campaignPriceColor)[0].trim(), "204");
             assertEquals(returnChannels(campaignPriceColor)[1].trim(), "0");
             assertEquals(returnChannels(campaignPriceColor)[2].trim(), "0");
 
